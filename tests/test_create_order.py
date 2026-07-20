@@ -1,7 +1,6 @@
-import requests
 import allure
 import pytest
-from data.urls import Urls
+from helpers.courier_helpers import create_order
 
 
 @allure.suite('Создание заказа')
@@ -15,7 +14,6 @@ class TestCreateOrder:
         []
     ])
     def test_create_order_with_colors(self, color):
-        # Данные для заказа
         payload = {
             "firstName": "Анна",
             "lastName": "Тестова",
@@ -27,17 +25,15 @@ class TestCreateOrder:
             "comment": "Тест",
             "color": color
         }
-        
-        response = requests.post(Urls.BASE_URL + Urls.ORDERS_CREATE, json=payload)
-        
-        # Проверяем, что заказ создался
+
+        response = create_order(payload)
+
         assert response.status_code == 201
         assert 'track' in response.json()
         assert response.json()['track'] is not None
 
     @allure.title('Тело ответа содержит track при создании заказа')
     def test_create_order_returns_track(self):
-        # Данные для заказа без цвета
         payload = {
             "firstName": "Иван",
             "lastName": "Петров",
@@ -49,11 +45,9 @@ class TestCreateOrder:
             "comment": "Тест track",
             "color": []
         }
-        
-        response = requests.post(Urls.BASE_URL + Urls.ORDERS_CREATE, json=payload)
-        
-        # Проверяем, что в ответе есть track
+
+        response = create_order(payload)
+
         assert response.status_code == 201
         assert 'track' in response.json()
-        # Проверяем, что track — это число
         assert isinstance(response.json()['track'], int)

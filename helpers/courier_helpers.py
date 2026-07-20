@@ -2,6 +2,7 @@ import requests
 import random
 import string
 from data.urls import Urls
+import allure
 
 
 def generate_random_string(length):
@@ -9,7 +10,7 @@ def generate_random_string(length):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(length))
 
-
+@allure.step("Регистрация нового курьера")
 def register_new_courier_and_return_login_password():
     """
     Регистрирует нового курьера с случайными логином, паролем и именем.
@@ -32,7 +33,7 @@ def register_new_courier_and_return_login_password():
         return login, password, first_name
     return None, None, None
 
-
+@allure.step("Логин курьера")
 def login_courier(login, password):
     """Авторизует курьера и возвращает ответ"""
     payload = {
@@ -42,8 +43,33 @@ def login_courier(login, password):
     response = requests.post(Urls.BASE_URL + Urls.COURIER_LOGIN, data=payload)
     return response
 
-
+@allure.step("Удаление курьера")
 def delete_courier(courier_id):
     """Удаляет курьера по ID"""
     response = requests.delete(Urls.BASE_URL + Urls.COURIER_DELETE + str(courier_id))
+    return response
+
+@allure.step("Создание курьера с заданными данными")
+def create_courier(login, password, first_name):
+    """Создаёт курьера с переданными логином, паролем и именем.
+       Возвращает ответ."""
+    payload = {
+        "login": login,
+        "password": password,
+        "firstName": first_name
+    }
+    response = requests.post(Urls.BASE_URL + Urls.COURIER_CREATE, data=payload)
+    return response
+
+@allure.step("Создание заказа")
+def create_order(order_data):
+    """Создаёт заказ с переданными данными. Возвращает ответ."""
+    response = requests.post(Urls.BASE_URL + Urls.ORDERS_CREATE, json=order_data)
+    return response
+
+
+@allure.step("Получение списка заказов")
+def get_orders_list():
+    """Возвращает список заказов."""
+    response = requests.get(Urls.BASE_URL + Urls.ORDERS_LIST)
     return response

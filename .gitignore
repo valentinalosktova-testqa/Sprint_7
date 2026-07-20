@@ -11,7 +11,6 @@ __pycache__/
 # Папки с отчётами
 .pytest_cache/
 allure_results/
-allure-report/
 
 # Файлы IDE
 .vscode/
@@ -27,6 +26,5 @@ __pycache__/
 *.pyc
 .pytest_cache/
 allure_results/
-allure-report/
 .vscode/
 .idea/
