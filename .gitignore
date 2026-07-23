@@ -1,0 +1,30 @@
+# Виртуальное окружение
+.venv/
+venv/
+env/
+
+# Кеш Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Папки с отчётами
+.pytest_cache/
+allure_results/
+
+# Файлы IDE
+.vscode/
+.idea/
+*.iml
+
+# Логи и временные файлы
+*.log
+*.tmp
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+allure_results/
+.vscode/
+.idea/
