@@ -73,3 +73,10 @@ def get_orders_list():
     """Возвращает список заказов."""
     response = requests.get(Urls.BASE_URL + Urls.ORDERS_LIST)
     return response
+
+@allure.step("Логин курьера без пароля")
+def login_courier_without_password(login):
+    """Отправляет запрос на логин только с логином (без пароля)."""
+    payload = {"login": login}
+    response = requests.post(Urls.BASE_URL + Urls.COURIER_LOGIN, data=payload)
+    return response

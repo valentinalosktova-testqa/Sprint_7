@@ -9,12 +9,14 @@ class TestCreateCourier:
     @allure.title('Курьера можно создать')
     def test_create_courier_success(self, create_and_delete_courier):
         login, password, first_name, courier_id = create_and_delete_courier
-
-        # Проверяем, что курьер создался
+    
+    # Проверяем, что курьер создался
         assert login is not None
         assert password is not None
         assert first_name is not None
-        assert courier_id is not None
+    # Проверяем, что courier_id — это число (код ответа был 201)
+        assert isinstance(courier_id, int) and courier_id > 0
+    
 
     @allure.title('Нельзя создать двух одинаковых курьеров')
     def test_create_duplicate_courier(self, create_and_delete_courier):

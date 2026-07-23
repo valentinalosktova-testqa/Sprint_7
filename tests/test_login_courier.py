@@ -1,8 +1,6 @@
 import allure
 import pytest
-from helpers.courier_helpers import login_courier
-from data.urls import Urls
-import requests
+from helpers.courier_helpers import login_courier, login_courier_without_password
 
 
 @allure.suite('Логин курьера')
@@ -29,9 +27,8 @@ class TestLoginCourier:
 
     @allure.title('Если какого-то поля нет, запрос возвращает ошибку')
     def test_login_missing_field(self):
-        # Отправляем запрос без пароля (не через login_courier, так как там нужен пароль)
-        payload = {"login": "some_login"}
-        response = requests.post(Urls.BASE_URL + Urls.COURIER_LOGIN, data=payload)
-
+        # Сервер возвращает 504 вместо 400 — это баг API
+        response = login_courier_without_password("some_login")
+    
         assert response.status_code == 400
         assert response.json().get('message') == 'Недостаточно данных для входа'
